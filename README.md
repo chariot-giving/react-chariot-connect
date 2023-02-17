@@ -39,10 +39,10 @@ const App = () => {
 | Attribute name    | Type             | Description                                                              |
 | ----------------- | ---------------- | ------------------------------------------------------------------------ |
 | cid               | string           | Retrieve a nonprofit's `cid` by calling the [Create Connect API](https://givechariot.readme.io/reference/create-connect).|
-| theme             | string \| Object | (optional) Modify the button theme based on the [Chariot Connect API documentation](https://givechariot.readme.io/reference/button-styles). Use a preset theme or define your own styling by passing in an Object. |
-| onDonationRequest | () => void       | Provide the Chariot Connect workflow with any information that you have collected for this donation session. More information can be found on the [Chariot Connect API documentation] (https://givechariot.readme.io/reference/integrating-connect#provide-donation-data-to-chariot-connect). |
-| onSuccess         | (e: any) => void | (optional) The success event contains a final summary of the Connect workflow session. It contains the workflow session id and relevant donation information. It is called when a workflow session is completed successfully. |
-| onExit            | (e: any) => void | (optional) The exit event is called when a user exits without successfully completing the flow, or when an error occurs during the flow. It is called when a workflow session closes without completion. |
+| theme             | string \| Object | (optional) Modify the button theme based on the [Chariot Connect API documentation](https://givechariot.readme.io/reference/button-styles). <br />Use a preset theme or define your own styling by passing in an Object. |
+| onDonationRequest | () => void       | Provide the Chariot Connect workflow with any information that you have collected <br />for this donation session. More information can be found on the [Chariot Connect API <br />documentation](https://givechariot.readme.io/reference/integrating-connect#provide-donation-data-to-chariot-connect). |
+| onSuccess         | (e: any) => void | (optional) The success event contains a final summary of the Connect workflow session. <br />It contains the workflow session id and relevant donation information. It is called when a <br />workflow session is completed successfully. |
+| onExit            | (e: any) => void | (optional) The exit event is called when a user exits without successfully completing the <br />flow, or when an error occurs during the flow. It is called when a workflow session closes <br />without completion. |
 
 
 ## Documentation
