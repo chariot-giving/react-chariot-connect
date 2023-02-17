@@ -38,7 +38,7 @@ const App = () => {
 ### Attributes
 | Attribute name    | Type             | Description                                                              |
 | ----------------- | ---------------- | ------------------------------------------------------------------------ |
-| cid               | string           | Retrieve a nonprofit's `cid` by calling the [Create Connect API](https://givechariot.readme.io/reference/create-connect).|
+| cid               | string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Retrieve a nonprofit's `cid` by calling the [Create Connect API](https://givechariot.readme.io/reference/create-connect).|
 | theme             | string \| Object | (optional) Modify the button theme based on the [Chariot Connect API documentation](https://givechariot.readme.io/reference/button-styles). Use a preset theme or define your own styling by passing in an Object. |
 | onDonationRequest | () => void       | Provide the Chariot Connect workflow with any information that you have collected for this donation session. More information can be found on the [Chariot Connect API documentation](https://givechariot.readme.io/reference/integrating-connect#provide-donation-data-to-chariot-connect). |
 | onSuccess         | (e: any) => void | (optional) The success event contains a final summary of the Connect workflow session. It contains the workflow session id and relevant donation information. It is called when a workflow session is completed successfully. |
