@@ -1,5 +1,5 @@
 {
-  "name": "react-chariot-connect-testing",
+  "name": "react-chariot-connect",
   "version": "1.0.3",
   "description": "",
   "main": "./dist/cjs/index.js",
