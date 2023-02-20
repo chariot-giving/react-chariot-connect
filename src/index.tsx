@@ -5,9 +5,10 @@ const noop = () => { }
 type ChariotConnectProps = {
     cid: string,
     theme?: string | Object,
-    onDonationRequest: () => void,
+    onDonationRequest: () => Object,
     onSuccess?: (e: any) => void,
     onExit?: (e: any) => void,
+    disabled?: boolean,
 }
 
 const ChariotConnect: React.FC<ChariotConnectProps> = ({
@@ -16,6 +17,7 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
     onDonationRequest,
     onSuccess = noop,
     onExit = noop,
+    disabled = false,
 }) => {
     useEffect(() => {
         const script = document.createElement('script');
@@ -27,7 +29,10 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
 
         const connect = document.createElement('chariot-connect') as any;
         connect.setAttribute('cid', cid);
-        connect.setAttribute('theme', (typeof theme === "string") ? theme : 'customTheme')
+        connect.setAttribute('theme', (typeof theme === "string") ? theme : 'customTheme');
+        if (disabled) {
+            connect.setAttribute('disabled', '');
+        }
 
         connect.addEventListener("CHARIOT_INIT", () => {
             connect.onDonationRequest(onDonationRequest);
