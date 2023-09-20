@@ -49,7 +49,7 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
             document.body.removeChild(script);
             connectContainer?.removeChild(connect);
         }
-    }, []);
+    }, [onDonationRequest]);
 
     return (
         <div id="connectContainer">
