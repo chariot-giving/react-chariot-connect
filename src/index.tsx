@@ -23,6 +23,13 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
     const [loading, error] = useScript({ src: 'https://cdn.givechariot.com/chariot-connect.umd.js' });
     
     useEffect(() => {
+        if (loading) {
+            return;
+        }
+        if (error) {
+            console.log("Error loading chariot connect.");
+            return;
+        }
         const connect = document.createElement('chariot-connect') as any;
         connect.setAttribute('cid', cid);
         connect.setAttribute('theme', (typeof theme === "string") ? theme : 'customTheme');
@@ -45,11 +52,7 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
             connectContainer?.removeChild(connect);
         }
     }, [onDonationRequest, loading, error]);
-
-        
-    if (loading || error) {
-        return <div/>
-    }
+  
     return (
         <div id="connectContainer">
         </div>
