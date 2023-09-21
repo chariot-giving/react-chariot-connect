@@ -20,7 +20,8 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
     onExit = noop,
     disabled = false,
 }) => {
-    useScript({ src: 'https://cdn.givechariot.com/chariot-connect.umd.js' });
+    const [loading, error] = useScript({ src: 'https://cdn.givechariot.com/chariot-connect.umd.js' });
+    
     useEffect(() => {
         const connect = document.createElement('chariot-connect') as any;
         connect.setAttribute('cid', cid);
@@ -43,8 +44,12 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
         return () => {
             connectContainer?.removeChild(connect);
         }
-    }, [onDonationRequest]);
+    }, [onDonationRequest, loading, error]);
 
+        
+    if (loading || error) {
+        return <div/>
+    }
     return (
         <div id="connectContainer">
         </div>
