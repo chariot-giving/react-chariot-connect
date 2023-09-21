@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import useScript from 'react-script-hook';
 
 const noop = () => { }
 
@@ -19,14 +20,16 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
     onExit = noop,
     disabled = false,
 }) => {
+    const [loading, error] = useScript({ src: 'https://cdn.givechariot.com/chariot-connect.umd.js' });
+    
     useEffect(() => {
-        const script = document.createElement('script');
-
-        script.src = "https://cdn.givechariot.com/chariot-connect.umd.js";
-        script.async = true;
-
-        document.body.appendChild(script);
-
+        if (loading) {
+            return;
+        }
+        if (error) {
+            console.log("Error loading chariot connect.");
+            return;
+        }
         const connect = document.createElement('chariot-connect') as any;
         connect.setAttribute('cid', cid);
         connect.setAttribute('theme', (typeof theme === "string") ? theme : 'customTheme');
@@ -46,11 +49,10 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
         connectContainer?.appendChild(connect)
 
         return () => {
-            document.body.removeChild(script);
             connectContainer?.removeChild(connect);
         }
-    }, [onDonationRequest]);
-
+    }, [onDonationRequest, loading, error]);
+  
     return (
         <div id="connectContainer">
         </div>
