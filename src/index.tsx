@@ -6,7 +6,7 @@ const noop = () => { }
 type ChariotConnectProps = {
     cid: string,
     theme?: string | Object,
-    onDonationRequest: () => Object,
+    onDonationRequest: () => Object | false,
     onSuccess?: (e: any) => void,
     onExit?: (e: any) => void,
     disabled?: boolean,
@@ -21,7 +21,7 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
     disabled = false,
 }) => {
     const [loading, error] = useScript({ src: 'https://cdn.givechariot.com/chariot-connect.umd.js' });
-    
+
     useEffect(() => {
         if (loading) {
             return;
@@ -52,7 +52,7 @@ const ChariotConnect: React.FC<ChariotConnectProps> = ({
             connectContainer?.removeChild(connect);
         }
     }, [onDonationRequest, loading, error]);
-  
+
     return (
         <div id="connectContainer">
         </div>
