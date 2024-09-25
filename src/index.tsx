@@ -76,23 +76,23 @@ function ChariotConnect(props: ChariotConnectProps) {
 }
 
 export function isGrant(e: CustomEvent["detail"]): e is Grant {
-	return "grant" in e.detail
+	return typeof e === "object" && "grant" in e
 }
 
 export function isRecurringGrant(
 	e: CustomEvent["detail"],
 ): e is RecurringGrant {
-	return "recurringGrant" in e.detail
+	return typeof e === "object" && "recurringGrant" in e
 }
 
 export function isGrantIntent(e: CustomEvent["detail"]): e is GrantIntent {
-	return "grantIntent" in e.detail
+	return typeof e === "object" && "grantIntent" in e
 }
 
 export function isRecurringGrantIntent(
 	e: CustomEvent["detail"],
 ): e is GrantIntent {
-	return "recurringGrantIntent" in e.detail
+	return typeof e === "object" && "recurringGrantIntent" in e
 }
 
 export default ChariotConnect
