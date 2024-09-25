@@ -38,13 +38,7 @@ export type DonationRequestParams = Partial<{
 	/**
 	 * The donor’s address: line1, line2, city, state, postalCode
 	 */
-	address: {
-		line1: string
-		line2: string
-		city: string
-		state: string
-		postalCode: string
-	}
+	address: Address
 	/**
 	 * An object with a set of name-value pairs. You can use this object to include any miscellaneous information you want to tie to the workflow session.
 	 */
@@ -56,7 +50,7 @@ export type DonationRequestParams = Partial<{
 	/**
 	 * The recurring frequency of the DAF grant (if it’s a recurring gift). This parameter allows the following possible enum values: ONE_TIME, MONTHLY. If not provided, the grant will default to a ONE_TIME grant. For more information on recurring donations, please see the section below
 	 */
-	frequency: "ONE_TIME" | "MONTHLY"
+	frequency: Frequency
 }>
 
 export type DonationRequestReturnType =
@@ -65,6 +59,115 @@ export type DonationRequestReturnType =
 	// biome-ignore lint/suspicious/noConfusingVoidType: This is a valid use case for void
 	| void
 	| Promise<DonationRequestReturnType>
+
+export type SuccessEvent = CustomEvent<
+	Grant | RecurringGrant | GrantIntent | RecurringGrantIntent
+>
+
+export type Grant = {
+	workflowSessionId: string
+	grant: {
+		id: string
+		userFriendlyId: string
+		trackingId: string | null
+		workflowSessionId: string
+		fundId: string
+		externalGrantId?: string
+		createdAt: string
+		updatedAt: string
+		amount: number
+		feeAmount: number
+		feeDetail: FeeDetail
+		coversFees: boolean
+		status: string
+		metadata: Record<string, unknown> | null
+		firstName?: string
+		lastName?: string
+		email?: string
+		phone?: string
+		address?: Address
+		note?: string
+		paymentChannel: PaymentChannel
+	}
+}
+
+export type RecurringGrant = {
+	workflowSessionId: string
+	recurringGrant: {
+		id: string
+		userFriendlyId: string
+		trackingId?: string
+		workflowSessionId: string
+		fundId: string
+		externalRecurringGrantId?: string
+		createdAt: string
+		updatedAt: string
+		amount: number
+		feeDetail?: FeeDetail
+		frequency: Frequency
+		firstName?: string
+		lastName?: string
+		email?: string
+		phone?: string
+		address?: Address
+		note?: string
+	}
+}
+
+export type GrantIntent = {
+	workflowSessionId: string
+	grantIntent: {
+		userFriendlyId: string
+		trackingId: string
+		fundId: string
+		amount: number
+		metadata: Record<string, unknown> | null
+	}
+}
+
+export type RecurringGrantIntent = {
+	workflowSessionId: string
+	recurringGrantIntent: {
+		userFriendlyId: string
+		trackingId: string
+		fundId: string
+		amount: number
+		frequency: Frequency
+		metadata: Record<string, unknown> | null
+	}
+}
+
+export type ExitEvent = CustomEvent<{
+	workflowSessionId: string
+	description: string
+	nodeId: string
+	prevNodeId: string
+	reason: ExitReason
+}>
+
+type FeeDetail = {
+	total: number
+	contributions: FeeDetailContribution[]
+}
+
+type FeeDetailContribution = {
+	name: string
+	amount: number
+	feeType: FeeType
+}
+
+type Address = {
+	line1: string
+	line2: string
+	city: string
+	state: string
+	country: string
+	postalCode: string
+}
+
+type PaymentChannel = "dafpay_network" | "direct" | "offline"
+
+type FeeType = "chariot" | "daf" | "fundraising_application"
 
 /**
  * @see https://docs.givechariot.com/button-styles#creating-a-custom-theme
@@ -85,7 +188,7 @@ export type CustomTheme = {
 }
 
 /**
- * @see https://docs.givechariot.com/button-styles#using-a-default-theme
+ * @see https://docs.givechariot.com/guides/dafpay/button-styles#using-a-default-theme
  */
 export type ChariotTheme =
 	| "DefaultTheme"
@@ -93,50 +196,7 @@ export type ChariotTheme =
 	| "LightBlueTheme"
 	| "GradientTheme"
 
-export type SuccessEvent = CustomEvent<{
-	workflowSessionId: string
-	grant: {
-		id: string
-		externalGrantId: string
-		userFriendlyId: string
-		amount: number
-		feeAmount: number
-		feeDetail: {
-			total: number
-			contributions: {
-				name: string
-				amount: number
-				feeType: string
-			}[]
-		}
-		firstName: string
-		lastName: string
-		email: string
-		address: {
-			line1: string
-			line2: string
-			city: string
-			state: string
-			country: string
-			postalCode: string
-		}
-		fundId: string
-		paymentChannel: string
-		metadata: Record<string, unknown>
-		status: string
-		trackingId: string
-		createdAt: string
-		updatedAt: string
-	}
-}>
-
-export type ExitEvent = CustomEvent<{
-	workflowSessionId: string
-	description: string
-	nodeId: string
-	prevNodeId: string
-	reason: ExitReason
-}>
+type Frequency = "ONE_TIME" | "MONTHLY"
 
 /**
  * The reason the user exited the flow
