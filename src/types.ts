@@ -53,6 +53,14 @@ export type DonationRequestParams = Partial<{
 	frequency: Frequency
 }>
 
+export type ChariotErrorType = "SCRIPT_LOAD_ERROR"
+
+export type ChariotError = {
+	type: ChariotErrorType
+	message: string
+	sourceEvent?: Event
+}
+
 export type DonationRequestReturnType =
 	| DonationRequestParams
 	| false
