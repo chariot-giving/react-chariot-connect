@@ -6,6 +6,9 @@ import type {
 	DonationRequestReturnType,
 	SuccessEvent,
 	ExitEvent,
+	GrantIntent,
+	Grant,
+	RecurringGrant,
 } from "./types"
 
 const noop = () => {}
@@ -70,6 +73,26 @@ function ChariotConnect(props: ChariotConnectProps) {
 	}, [onDonationRequest, loading, error])
 
 	return <div id="connectContainer" />
+}
+
+export function isGrant(e: CustomEvent["detail"]): e is Grant {
+	return "grant" in e.detail
+}
+
+export function isRecurringGrant(
+	e: CustomEvent["detail"],
+): e is RecurringGrant {
+	return "recurringGrant" in e.detail
+}
+
+export function isGrantIntent(e: CustomEvent["detail"]): e is GrantIntent {
+	return "grantIntent" in e.detail
+}
+
+export function isRecurringGrantIntent(
+	e: CustomEvent["detail"],
+): e is GrantIntent {
+	return "recurringGrantIntent" in e.detail
 }
 
 export default ChariotConnect
