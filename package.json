@@ -20,6 +20,7 @@
   "author": "Chariot Giving",
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "1.9.2",
     "@types/react": "18",
     "react": "18",
     "react-dom": "18",
