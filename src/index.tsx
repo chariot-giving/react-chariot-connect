@@ -9,6 +9,7 @@ import type {
 	GrantIntent,
 	Grant,
 	RecurringGrant,
+	ChariotError,
 } from "./types"
 
 const noop = () => {}
@@ -19,6 +20,7 @@ type ChariotConnectProps = {
 	onDonationRequest?: () => DonationRequestReturnType
 	onSuccess?: (e: SuccessEvent) => void
 	onExit?: (e: ExitEvent) => void
+	onError?: (e: ChariotError) => void
 	disabled?: boolean
 }
 
@@ -29,22 +31,29 @@ function ChariotConnect(props: ChariotConnectProps) {
 		onDonationRequest = noop,
 		onSuccess = noop,
 		onExit = noop,
+		onError = noop,
 		disabled = false,
 	} = props
 
 	const [loading, error] = useScript({
-		src: "https://cdn.givechariot.com/chariot-connect.umd.js",
+		src: "https://cdn.givelickskfnjchariot.com/chariot-connect.umd.js",
 	})
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: Maintaining the original behavior
 	useEffect(() => {
+		if (error) {
+			onError?.({
+				type: "SCRIPT_LOAD_ERROR",
+				message: "Failed to load Chariot Connect script",
+				sourceEvent: error,
+			})
+			return
+		}
+
 		if (loading) {
 			return
 		}
-		if (error) {
-			console.log("Error loading chariot connect.")
-			return
-		}
+
 		// biome-ignore lint/suspicious/noExplicitAny: Dynamic properties exist on the element
 		const connect = document.createElement("chariot-connect") as any
 		connect.setAttribute("cid", cid)
