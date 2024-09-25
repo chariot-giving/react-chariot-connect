@@ -21,9 +21,9 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.9.2",
-    "@types/react": "18",
-    "react": "18",
-    "react-dom": "18",
+    "@types/react": "^18.1.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "tslib": "^2.5.0",
     "typescript": "^4.7.3"
   },
