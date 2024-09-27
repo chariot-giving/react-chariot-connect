@@ -17,7 +17,7 @@ import ChariotConnect from 'react-chariot-connect';
 const App = () => {
   const onSuccess = (e) => console.log('success', e);
   const onExit = (e) => console.log('exit', e);
-  const onDonationRequest = () => {
+  const onDonationRequest = ({ detail }) => {
     // your logic
   }
 
@@ -38,12 +38,12 @@ const App = () => {
 ### Attributes
 | Attribute name    | Type             | Description                                                              |
 | ----------------- | ---------------- | ------------------------------------------------------------------------ |
-| cid               | string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Retrieve a nonprofit's `cid` by calling the [Create Connect API](https://givechariot.readme.io/reference/create-connect).|
-| theme             | string \| Object | (optional) Modify the button theme based on the [Chariot Connect API documentation](https://givechariot.readme.io/reference/button-styles). Use a preset theme or define your own styling by passing in an Object. |
-| onDonationRequest | () => void       | Provide the Chariot Connect workflow with any information that you have collected for this donation session. More information can be found on the [Chariot Connect API documentation](https://givechariot.readme.io/reference/donation-data). |
-| onSuccess         | (e: any) => void | (optional) The success event contains a final summary of the Connect workflow session. It contains the workflow session id and relevant donation information. It is called when a workflow session is completed successfully. |
-| onExit            | (e: any) => void | (optional) The exit event is called when a user exits without successfully completing the flow, or when an error occurs during the flow. It is called when a workflow session closes without completion. |
+| cid               | string           | Retrieve a nonprofit's `cid` by calling the [Create Connect API](https://givechariot.readme.io/reference/create-connect).|
+| theme             | ChariotTheme \| CustomTheme | (optional) Modify the button theme based on the [Chariot Connect API documentation](https://docs.givechariot.com/guides/dafpay/button-styles). Use a preset theme or define your own styling by passing in an Object. |
+| onDonationRequest | () => DonationRequestReturnType       | (optional) Provide the Chariot Connect workflow with any information that you have collected for this donation session. More information can be found on the [Chariot Connect API documentation](https://docs.givechariot.com/guides/dafpay/overview). |
+| onSuccess         | (e: SuccessEvent) => void | (optional) The success event contains a final summary of the Connect workflow session. It contains the workflow session id and relevant donation information. It is called when a workflow session is completed successfully. |
+| onExit            | (e: ExitEvent) => void | (optional) The exit event is called when a user exits without successfully completing the flow, or when an error occurs during the flow. It is called when a workflow session closes without completion. |
 
 
 ## Documentation
-Check out the [documentation](https://givechariot.readme.io/reference/overview-1) for more information.
+Check out the [documentation](https://docs.givechariot.com/guides/dafpay/overview) for more information.
