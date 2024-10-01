@@ -17,6 +17,7 @@ import ChariotConnect from 'react-chariot-connect';
 const App = () => {
   const onSuccess = (e) => console.log('success', e);
   const onExit = (e) => console.log('exit', e);
+  const onError = (e) => console.log('error', e);
   const onDonationRequest = ({ detail }) => {
     // your logic
   }
@@ -29,6 +30,7 @@ const App = () => {
           onDonationRequest={onDonationRequest}
           onSuccess={onSuccess}
           onExit={onExit}
+          onError={onError}
         />
     </div>
   );
@@ -43,6 +45,7 @@ const App = () => {
 | onDonationRequest | () => DonationRequestReturnType       | (optional) Provide the Chariot Connect workflow with any information that you have collected for this donation session. More information can be found on the [Chariot Connect API documentation](https://docs.givechariot.com/guides/dafpay/overview). |
 | onSuccess         | (e: SuccessEvent) => void | (optional) The success event contains a final summary of the Connect workflow session. It contains the workflow session id and relevant donation information. It is called when a workflow session is completed successfully. |
 | onExit            | (e: ExitEvent) => void | (optional) The exit event is called when a user exits without successfully completing the flow, or when an error occurs during the flow. It is called when a workflow session closes without completion. |
+| onError           | (e: ErrorEvent) => void | (optional) The error event is called when an error occurs on script load. |
 
 
 ## Documentation
