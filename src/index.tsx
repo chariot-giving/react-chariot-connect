@@ -36,7 +36,7 @@ function ChariotConnect(props: ChariotConnectProps) {
 	} = props
 
 	const [loading, error] = useScript({
-		src: "https://cdn.givelickskfnjchariot.com/chariot-connect.umd.js",
+		src: "https://cdn.givechariot.com/chariot-connect.umd.js",
 	})
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: Maintaining the original behavior
