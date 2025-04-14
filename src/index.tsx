@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import useScript from "react-script-hook"
 import type {
 	ChariotTheme,
@@ -22,6 +22,7 @@ type ChariotConnectProps = {
 	onExit?: (e: ExitEvent) => void
 	onError?: (e: ChariotError) => void
 	disabled?: boolean
+	isOpen?: boolean
 }
 
 function ChariotConnect(props: ChariotConnectProps) {
@@ -33,8 +34,11 @@ function ChariotConnect(props: ChariotConnectProps) {
 		onExit = noop,
 		onError = noop,
 		disabled = false,
+		isOpen = false,
 	} = props
 
+	const connectElementRef = useRef<HTMLElement | null>(null)
+	const hasClickedRef = useRef(false)
 	const [loading, error] = useScript({
 		src: "https://cdn.givechariot.com/chariot-connect.umd.js",
 	})
@@ -56,6 +60,7 @@ function ChariotConnect(props: ChariotConnectProps) {
 
 		// biome-ignore lint/suspicious/noExplicitAny: Dynamic properties exist on the element
 		const connect = document.createElement("chariot-connect") as any
+		connectElementRef.current = connect
 		connect.setAttribute("cid", cid)
 		connect.setAttribute(
 			"theme",
@@ -80,6 +85,14 @@ function ChariotConnect(props: ChariotConnectProps) {
 			connectContainer?.removeChild(connect)
 		}
 	}, [onDonationRequest, loading, error])
+
+	// Effect to handle isOpen prop changes
+	useEffect(() => {
+		if (connectElementRef.current && isOpen && !hasClickedRef.current) {
+			connectElementRef.current.click()
+			hasClickedRef.current = true
+		}
+	}, [isOpen])
 
 	return <div id="connectContainer" />
 }
