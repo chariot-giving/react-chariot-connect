@@ -22,6 +22,7 @@ type ChariotConnectProps = {
 	onExit?: (e: ExitEvent) => void
 	onError?: (e: ChariotError) => void
 	disabled?: boolean
+	loadingComponent?: React.ReactNode;
 }
 
 function ChariotConnect(props: ChariotConnectProps) {
@@ -33,6 +34,7 @@ function ChariotConnect(props: ChariotConnectProps) {
 		onExit = noop,
 		onError = noop,
 		disabled = false,
+		loadingComponent,
 	} = props
 
 	const [loading, error] = useScript({
@@ -81,7 +83,17 @@ function ChariotConnect(props: ChariotConnectProps) {
 		}
 	}, [onDonationRequest, loading, error])
 
-	return <div id="connectContainer" />
+	return (<>
+		{loading && loadingComponent ? (
+			loadingComponent
+		) : <div>Loading...</div>}
+		{error ? (
+			<div className="chariot-error">
+				{error.message || "An error occurred while loading Chariot Connect."}
+			</div>
+		) : null}
+	<div id="connectContainer" />
+	</>)
 }
 
 export function isGrant(e: CustomEvent["detail"]): e is Grant {

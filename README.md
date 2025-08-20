@@ -21,6 +21,8 @@ const App = () => {
   const onDonationRequest = ({ detail }) => {
     // your logic
   }
+  const disabled = false;
+  const loadingComponent = // your custom loading component
 
   return (
     <div>
@@ -31,6 +33,8 @@ const App = () => {
           onSuccess={onSuccess}
           onExit={onExit}
           onError={onError}
+          disabled={disabled}
+          loadingComponent={loadingComponent}
         />
     </div>
   );
@@ -46,6 +50,8 @@ const App = () => {
 | onSuccess         | (e: SuccessEvent) => void | (optional) The success event contains a final summary of the Connect workflow session. It contains the workflow session id and relevant donation information. It is called when a workflow session is completed successfully. |
 | onExit            | (e: ExitEvent) => void | (optional) The exit event is called when a user exits without successfully completing the flow, or when an error occurs during the flow. It is called when a workflow session closes without completion. |
 | onError           | (e: ErrorEvent) => void | (optional) The error event is called when an error occurs on script load. |
+| disabled          | boolean          | (optional) If true, disables the Chariot Connect button and prevents user interaction. |
+| loadingComponent  | React.ReactNode  | (optional) A custom React component to display while the Chariot Connect script is loading. |
 
 
 ## Documentation
