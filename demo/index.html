@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>react-chariot-connect demo</title>
+    <style>
+      chariot-connect:not(:defined) {
+        display: inline-block;
+        height: 40px;
+        width: 220px;
+        border-radius: 9999px;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08) inset;
+        background: rgba(0, 0, 0, 0.05);
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+      @keyframes pulse { 0%,100%{ opacity:.6 } 50%{ opacity:1 } }
+    </style>
+    <!-- <link rel="preconnect" href="https://cdn.givechariot.com">
+    <link rel="dns-prefetch" href="https://cdn.givechariot.com">
+    <script src="https://cdn.givechariot.com/chariot-connect.umd.js" defer></script> -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+  </html>
+
+
