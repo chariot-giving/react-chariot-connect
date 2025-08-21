@@ -182,13 +182,15 @@ type FeeType = "chariot" | "daf" | "fundraising_application"
  */
 export type CustomTheme = {
 	/**
-	 *  The width of the button up to `16` or `64px`
+	 *  The width of the button.
+	 *  Must be at least 9 or 36px and up to 16 or 64px
 	 */
-	width: number
+	width: string
 	/**
-	 * 	The height of the button up to `16` or `64px`
+	 * 	The height of the button.
+	 *  Must be at least 9 or 36px up to 12 or 48px
 	 */
-	height: number
+	height: string
 	/**
 	 * 	Show an extended text (Give with Donor Advised Fund) version of the DAFpay button text
 	 */

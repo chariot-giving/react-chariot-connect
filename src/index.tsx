@@ -121,7 +121,9 @@ function ChariotConnect(props: ChariotConnectProps) {
       })}
       <style>{`
         chariot-connect:not(:defined){
-          display:inline-block;height:48px;width:240px;border-radius:4px;
+          display:inline-block;border-radius:4px;
+          height:var(--loading-height, 48px);
+          width:var(--loading-width, 240px);
           box-shadow:0 0 0 1px rgba(0,0,0,.08) inset;background:rgba(0,0,0,.05);
           animation:pulse 1.2s ease-in-out infinite;
         }

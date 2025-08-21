@@ -1,34 +1,5 @@
 import ChariotConnect from "react-chariot-connect";
 
-const CustomLoadingComponent = () => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: "8px",
-      background: "#f0f9ff",
-      border: "2px solid #0ea5e9",
-      borderRadius: "8px",
-      padding: "8px 16px",
-      fontSize: "14px",
-      color: "#0369a1",
-      fontWeight: "500",
-    }}
-  >
-    <div
-      style={{
-        width: "16px",
-        height: "16px",
-        border: "2px solid #0ea5e9",
-        borderTop: "2px solid transparent",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
-      }}
-    ></div>
-    Loading Chariot...
-  </div>
-);
-
 export default function App() {
   return (
     <div
@@ -47,9 +18,10 @@ export default function App() {
         component.
       </p>
 
-      <h2>Default Loading State</h2>
+      <h2>Default Theme Loading State</h2>
       <p style={{ fontSize: 14, color: "#666", marginBottom: 16 }}>
-        Uses the built-in pulsing skeleton when no loadingComponent is provided.
+        Uses the built-in pulsing skeleton with default dimensions (240px ×
+        48px).
       </p>
       <ChariotConnect
         cid="DEMO_CID"
