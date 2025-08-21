@@ -1,6 +1,6 @@
 {
   "name": "react-chariot-connect",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "React hook and component for integrating with Chariot Connect.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
