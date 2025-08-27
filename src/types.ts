@@ -131,6 +131,13 @@ export type GrantIntent = {
 		amount: number
 		metadata: Record<string, unknown> | null
 	}
+	user?: {
+		firstName?: string
+		lastName?: string
+		email?: string
+		phone?: string
+		address?: Address
+	}
 }
 
 export type RecurringGrantIntent = {
@@ -142,6 +149,13 @@ export type RecurringGrantIntent = {
 		amount: number
 		frequency: Frequency
 		metadata: Record<string, unknown> | null
+	}
+	user?: {
+		firstName?: string
+		lastName?: string
+		email?: string
+		phone?: string
+		address?: Address
 	}
 }
 
