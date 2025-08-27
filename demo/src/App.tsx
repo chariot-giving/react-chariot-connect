@@ -23,14 +23,16 @@ export default function App() {
         Uses the built-in pulsing skeleton with default dimensions (240px ×
         48px).
       </p>
-      <ChariotConnect
-        cid="DEMO_CID"
-        theme="DefaultTheme"
-        onDonationRequest={() => ({})}
-        onSuccess={() => console.log("success")}
-        onExit={() => console.log("exit")}
-        onError={(e) => console.error(e)}
-      />
+      <div style={{ width: "100%", padding: "20px" }}>
+        <ChariotConnect
+          cid="DEMO_CID"
+          theme="DefaultTheme"
+          onDonationRequest={() => ({})}
+          onSuccess={() => console.log("success")}
+          onExit={() => console.log("exit")}
+          onError={(e) => console.error(e)}
+        />
+      </div>
     </div>
   );
 }

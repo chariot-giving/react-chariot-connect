@@ -117,7 +117,6 @@ function ChariotConnect(props: ChariotConnectProps) {
         cid,
         theme: typeof theme === "string" ? theme : "customTheme",
         ...(disabled ? { disabled: "" } : {}),
-        style: { display: "inline-block" },
       })}
       <style>{`
         chariot-connect:not(:defined){
