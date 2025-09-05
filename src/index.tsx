@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useScript from "react-script-hook";
 import type {
   ChariotTheme,
@@ -13,6 +13,40 @@ import type {
 } from "./types";
 
 const noop = () => {};
+
+// Type definitions for the new DAFpay API
+declare global {
+  interface Window {
+    ChariotDafpay: (config?: {
+      cid?: string;
+      theme?: ChariotTheme | "customTheme";
+    }) => {
+      loading: boolean;
+      error: Error | null;
+      ready: boolean;
+      load: () => Promise<void>;
+      createElement: (elementConfig?: {
+        cid?: string;
+        theme?: ChariotTheme | "customTheme";
+        disabled?: boolean;
+      }) => HTMLElement | null;
+      isReady: () => boolean;
+      onStateChange: (
+        callback: (state: {
+          loading: boolean;
+          loaded: boolean;
+          error: Error | null;
+          ready: boolean;
+        }) => void
+      ) => () => void; // Returns unsubscribe function
+      initialize: (initConfig?: {
+        cid?: string;
+        theme?: ChariotTheme | "customTheme";
+        disabled?: boolean;
+      }) => Promise<HTMLElement | boolean>;
+    };
+  }
+}
 
 type ChariotConnectProps = {
   cid: string;
@@ -35,12 +69,19 @@ function ChariotConnect(props: ChariotConnectProps) {
     disabled = false,
   } = props;
 
-  const [, error] = useScript({
-    src: "https://cdn.givechariot.com/chariot-connect.umd.js",
+  // TODO: replace this with the production script URL once it's released
+  const [loading, error] = useScript({
+    src: "https://cdn.givechariot.com/development/initialize-dafpay.js",
     checkForExisting: true,
   });
 
-  const elementRef = useRef<HTMLElement | null>(null);
+  const elementRef = useRef<HTMLDivElement | null>(null);
+  const dafpayInstanceRef = useRef<ReturnType<
+    typeof window.ChariotDafpay
+  > | null>(null);
+  const unsubscribeRef = useRef<(() => void) | null>(null);
+  const [isReady, setIsReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Maintaining the original behavior
   useEffect(() => {
@@ -53,78 +94,168 @@ function ChariotConnect(props: ChariotConnectProps) {
     }
   }, [error, onError]);
 
+  // Initialize DAFpay instance and handle state changes
   useEffect(() => {
-    const el = elementRef.current as any;
-    if (!el || typeof window === "undefined" || !("customElements" in window))
+    if (typeof window === "undefined" || loading) return;
+
+    console.debug("Attempting to initialize DAFpay");
+
+    if (!window.ChariotDafpay) {
+      console.warn("ChariotDafpay not available on window object");
+      onError?.({
+        type: "SCRIPT_LOAD_ERROR",
+        message: "ChariotDafpay not available on window after script load",
+        sourceEvent: new Error("ChariotDafpay not found") as any,
+      });
       return;
+    }
 
-    let cleanup = () => {};
+    let unsubscribe: (() => void) | null = null;
 
-    customElements
-      .whenDefined("chariot-connect")
-      .then(() => {
-        try {
-          if (onDonationRequest) el.onDonationRequest(onDonationRequest);
-          if (typeof theme !== "string") {
-            el.registerTheme("customTheme", theme);
-          }
-
-          const onInit = () => {};
-          const onSucc = (e: Event) => onSuccess?.(e as any);
-          const onEx = (e: Event) => onExit?.(e as any);
-
-          el.addEventListener("CHARIOT_INIT", onInit);
-          el.addEventListener("CHARIOT_SUCCESS", onSucc);
-          el.addEventListener("CHARIOT_EXIT", onEx);
-
-          cleanup = () => {
-            el.removeEventListener("CHARIOT_INIT", onInit);
-            el.removeEventListener("CHARIOT_SUCCESS", onSucc);
-            el.removeEventListener("CHARIOT_EXIT", onEx);
-          };
-        } catch (err) {
-          onError?.({
-            type: "SCRIPT_LOAD_ERROR",
-            message: "Failed to initialize Chariot Connect",
-            sourceEvent: err as any,
-          });
-        }
-      })
-      .catch((err) => {
-        onError?.({
-          type: "SCRIPT_LOAD_ERROR",
-          message: "Failed to define custom element chariot-connect",
-          sourceEvent: err as any,
-        });
+    try {
+      // Create DAFpay instance with initial config
+      const dafpay = window.ChariotDafpay({
+        cid,
+        theme: typeof theme === "string" ? theme : "customTheme",
       });
 
-    return () => cleanup();
-  }, [onDonationRequest, onSuccess, onExit, onError, theme]);
+      dafpayInstanceRef.current = dafpay;
 
-  const elementProps: Record<string, unknown> = {
-    ref: elementRef,
+      // Register custom theme if provided
+      if (typeof theme !== "string") {
+        // Note: Custom theme registration will need to be handled by the DAFpay API
+        // This may need to be updated based on the actual API implementation
+        console.warn(
+          "Custom theme registration needs to be implemented in new DAFpay API"
+        );
+      }
+
+      // Subscribe to state changes - this will be called immediately with current state
+      unsubscribe = dafpay.onStateChange((state) => {
+        setIsLoading(state.loading);
+        setIsReady(state.ready);
+
+        if (state.error) {
+          console.error("DAFpay error:", state.error);
+          onError?.({
+            type: "SCRIPT_LOAD_ERROR",
+            message: "DAFpay script error",
+            sourceEvent: state.error as any,
+          });
+        }
+      });
+
+      unsubscribeRef.current = unsubscribe;
+    } catch (err) {
+      console.error("Error creating DAFpay instance:", err);
+      onError?.({
+        type: "SCRIPT_LOAD_ERROR",
+        message: "Failed to create DAFpay instance",
+        sourceEvent: err as any,
+      });
+    }
+
+    // Cleanup function
+    return () => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+        unsubscribeRef.current = null;
+      }
+    };
+  }, [loading, cid, theme, onError]);
+
+  // Create element and set up event listeners when ready
+  useEffect(() => {
+    if (!isReady || !dafpayInstanceRef.current) return;
+
+    try {
+      console.log("Creating DAFpay element with config:", {
+        cid,
+        theme: typeof theme === "string" ? theme : "customTheme",
+        disabled,
+      });
+
+      // Create element with configuration
+      const element = dafpayInstanceRef.current.createElement({
+        cid,
+        theme: typeof theme === "string" ? theme : "customTheme",
+        disabled,
+      });
+
+      console.log("Created element:", element);
+
+      if (!element) {
+        console.error("createElement returned null");
+        onError?.({
+          type: "SCRIPT_LOAD_ERROR",
+          message:
+            "Failed to create DAFpay element - createElement returned null",
+          sourceEvent: new Error("createElement returned null") as any,
+        });
+        return;
+      }
+
+      const container = elementRef.current;
+      if (container) {
+        console.log("Appending element to container");
+        // Clear any existing content
+        container.innerHTML = "";
+        container.appendChild(element);
+
+        // Set up event listeners on the created element
+        const onSucc = (e: Event) => onSuccess?.(e as any);
+        const onEx = (e: Event) => onExit?.(e as any);
+
+        element.addEventListener("CHARIOT_SUCCESS", onSucc);
+        element.addEventListener("CHARIOT_EXIT", onEx);
+
+        // Handle onDonationRequest callback
+        if (onDonationRequest && (element as any).onDonationRequest) {
+          (element as any).onDonationRequest(onDonationRequest);
+        }
+
+        return () => {
+          element.removeEventListener("CHARIOT_SUCCESS", onSucc);
+          element.removeEventListener("CHARIOT_EXIT", onEx);
+        };
+      }
+    } catch (err) {
+      console.error("Error creating/setting up DAFpay element:", err);
+      onError?.({
+        type: "SCRIPT_LOAD_ERROR",
+        message: "Failed to create or setup DAFpay element",
+        sourceEvent: err as any,
+      });
+    }
+
+    return () => {}; // Return empty cleanup function for all paths
+  }, [
+    isReady,
     cid,
-    theme: typeof theme === "string" ? theme : "customTheme",
-  };
-  if (disabled) {
-    (elementProps as any).disabled = "";
-  }
+    theme,
+    disabled,
+    onDonationRequest,
+    onSuccess,
+    onExit,
+    onError,
+  ]);
 
   return (
     <>
-      {React.createElement("chariot-connect", {
-        ref: elementRef,
-        cid,
-        theme: typeof theme === "string" ? theme : "customTheme",
-        ...(disabled ? { disabled: "" } : {}),
-      })}
+      <div
+        ref={elementRef}
+        className={isLoading ? "chariot-loading" : "chariot-ready"}
+      />
       <style>{`
-        chariot-connect:not(:defined){
+        .chariot-loading {
           display:inline-block;border-radius:4px;
           height:var(--loading-height, 48px);
           width:var(--loading-width, 240px);
           box-shadow:0 0 0 1px rgba(0,0,0,.08) inset;background:rgba(0,0,0,.05);
           animation:pulse 1.2s ease-in-out infinite;
+        }
+        .chariot-ready {
+          display:inline-block;
         }
         @keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
       `}</style>
