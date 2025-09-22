@@ -69,9 +69,8 @@ function ChariotConnect(props: ChariotConnectProps) {
     disabled = false,
   } = props;
 
-  // TODO: replace this with the production script URL once it's released
   const [loading, error] = useScript({
-    src: "https://cdn.givechariot.com/development/initialize-dafpay.js",
+    src: "https://cdn.givechariot.com/initialize-dafpay.js",
     checkForExisting: true,
   });
 

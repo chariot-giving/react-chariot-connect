@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -14,18 +14,24 @@
         background: rgba(0, 0, 0, 0.05);
         animation: pulse 1.2s ease-in-out infinite;
       }
-      @keyframes pulse { 0%,100%{ opacity:.6 } 50%{ opacity:1 } }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
     </style>
     <!-- Include/Uncomment these lines to avoid a loading state altogether -->
     <!-- This works because the script is loaded before the first paint-->
     <!-- <link rel="preconnect" href="https://cdn.givechariot.com">
     <link rel="dns-prefetch" href="https://cdn.givechariot.com">
-    <script src="https://cdn.givechariot.com/chariot-connect.umd.js" defer></script> -->
+    <script src="https://cdn.givechariot.com/initialize-dafpay.js" defer></script> -->
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
-  </html>
-
-
+</html>
