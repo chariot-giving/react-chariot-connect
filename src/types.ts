@@ -53,6 +53,8 @@ export type DonationRequestParams = Partial<{
 	frequency: Frequency
 }>
 
+export type ChariotCheckoutContext = "iframe" | "popup"
+
 export type ChariotErrorType = "SCRIPT_LOAD_ERROR"
 
 export type ChariotError = {

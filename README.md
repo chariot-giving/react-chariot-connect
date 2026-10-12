@@ -46,6 +46,7 @@ const App = () => {
 | onSuccess         | (e: SuccessEvent) => void | (optional) The success event contains a final summary of the Connect workflow session. It contains the workflow session id and relevant donation information. It is called when a workflow session is completed successfully. |
 | onExit            | (e: ExitEvent) => void | (optional) The exit event is called when a user exits without successfully completing the flow, or when an error occurs during the flow. It is called when a workflow session closes without completion. |
 | onError           | (e: ErrorEvent) => void | (optional) The error event is called when an error occurs on script load. |
+| context           | "iframe" \| "popup" | (optional) Where the checkout opens. By default Chariot chooses based on the donor's browser and where the button is placed. |
 
 
 ## Documentation
