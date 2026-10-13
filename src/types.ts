@@ -53,6 +53,9 @@ export type DonationRequestParams = Partial<{
 	frequency: Frequency
 }>
 
+/**
+ * Where the checkout opens. Leave unset so Chariot picks per browser; forcing "iframe" can break the checkout in Safari, on mobile, and inside embedded forms.
+ */
 export type ChariotCheckoutContext = "iframe" | "popup"
 
 export type ChariotErrorType = "SCRIPT_LOAD_ERROR"

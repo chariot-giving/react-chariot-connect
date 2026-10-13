@@ -59,6 +59,9 @@ type ChariotConnectProps = {
   onExit?: (e: ExitEvent) => void;
   onError?: (e: ChariotError) => void;
   disabled?: boolean;
+  /**
+   * Not recommended. Forcing "iframe" can break the checkout in Safari, on mobile, and inside embedded forms; test across browsers if you set it.
+   */
   context?: ChariotCheckoutContext;
 };
 
