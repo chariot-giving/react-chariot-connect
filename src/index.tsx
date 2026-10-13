@@ -60,7 +60,7 @@ type ChariotConnectProps = {
   onError?: (e: ChariotError) => void;
   disabled?: boolean;
   /**
-   * Not recommended. Forcing "iframe" can break the checkout in Safari, on mobile, and inside embedded forms; test across browsers if you set it.
+   * We recommend leaving this unset. Forcing "iframe" can break the checkout in Safari, on mobile, or when your donation form is itself embedded in an iframe. If you set "iframe", test the checkout across browsers and devices.
    */
   context?: ChariotCheckoutContext;
 };
