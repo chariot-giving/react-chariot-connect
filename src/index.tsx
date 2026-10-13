@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import useScript from "react-script-hook";
 import type {
+  ChariotCheckoutContext,
   ChariotTheme,
   CustomTheme,
   DonationRequestReturnType,
@@ -29,6 +30,7 @@ declare global {
         cid?: string;
         theme?: ChariotTheme | "customTheme";
         disabled?: boolean;
+        context?: ChariotCheckoutContext;
       }) => HTMLElement | null;
       isReady: () => boolean;
       onStateChange: (
@@ -43,6 +45,7 @@ declare global {
         cid?: string;
         theme?: ChariotTheme | "customTheme";
         disabled?: boolean;
+        context?: ChariotCheckoutContext;
       }) => Promise<HTMLElement | boolean>;
     };
   }
@@ -56,6 +59,10 @@ type ChariotConnectProps = {
   onExit?: (e: ExitEvent) => void;
   onError?: (e: ChariotError) => void;
   disabled?: boolean;
+  /**
+   * We recommend leaving this unset. Forcing "iframe" can break the checkout in Safari, on mobile, or when your donation form is itself embedded in an iframe. If you set "iframe", test the checkout across browsers and devices.
+   */
+  context?: ChariotCheckoutContext;
 };
 
 function ChariotConnect(props: ChariotConnectProps) {
@@ -67,6 +74,7 @@ function ChariotConnect(props: ChariotConnectProps) {
     onExit = noop,
     onError = noop,
     disabled = false,
+    context,
   } = props;
 
   const [loading, error] = useScript({
@@ -172,6 +180,7 @@ function ChariotConnect(props: ChariotConnectProps) {
         cid,
         theme: typeof theme === "string" ? theme : "customTheme",
         disabled,
+        context,
       });
 
       // Create element with configuration
@@ -179,6 +188,7 @@ function ChariotConnect(props: ChariotConnectProps) {
         cid,
         theme: typeof theme === "string" ? theme : "customTheme",
         disabled,
+        context,
       });
 
       console.log("Created element:", element);
@@ -233,6 +243,7 @@ function ChariotConnect(props: ChariotConnectProps) {
     cid,
     theme,
     disabled,
+    context,
     onDonationRequest,
     onSuccess,
     onExit,
