@@ -36,4 +36,5 @@ jobs:
           node-version: 24
       - run: yarn install --frozen-lockfile
       # npm trusted publishing authenticates with the OIDC id-token, so there is no npm token.
-      - run: npm publish --provenance --access public
+      # The version stays private until a maintainer runs `npm stage approve` with 2FA.
+      - run: npm stage publish --provenance --access public
