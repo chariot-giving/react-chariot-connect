@@ -51,3 +51,6 @@ const App = () => {
 
 ## Documentation
 Check out the [documentation](https://docs.givechariot.com/guides/dafpay/overview) for more information.
+
+## Releasing
+Merge pull requests into `main` with conventional commit titles (`feat:`, `fix:`, and so on). release-please collects those changes into a release pull request that bumps the version and updates `CHANGELOG.md`. Merging the release pull request tags the version, creates a GitHub release, and publishes the package to npm.
