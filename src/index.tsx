@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import useScript from "react-script-hook";
+import useScript from "./useScript";
 import type {
   ChariotCheckoutContext,
   ChariotTheme,

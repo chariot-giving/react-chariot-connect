@@ -11,7 +11,7 @@ export default function App() {
       <h1>react-chariot-connect demo</h1>
       <p>
         Shows the pre-upgrade skeleton (pulsing pill), then upgrades after the
-        script loads via react-script-hook.
+        script loads.
       </p>
       <p style={{ fontSize: 14, color: "#666", marginBottom: 16 }}>
         The script loading is handled automatically by the ChariotConnect
