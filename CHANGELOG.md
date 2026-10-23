@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/chariot-giving/react-chariot-connect/compare/v1.3.0...v1.3.1) (2026-10-23)
+
+
+### Bug Fixes
+
+* **deps:** patch demo dependency alerts ([#23](https://github.com/chariot-giving/react-chariot-connect/issues/23)) ([62fec1b](https://github.com/chariot-giving/react-chariot-connect/commit/62fec1baae2f707223b9667a4439a990245f9e14))
+
 ## [1.3.0](https://github.com/chariot-giving/react-chariot-connect/compare/v1.2.0...v1.3.0) (2026-10-14)
 
 
